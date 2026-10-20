@@ -2,7 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import prisma from '../prisma';
 
-export interface AuthRequest extends Request {
+// Express 5's default ParamsDictionary types values as `string | string[]`,
+// and req.query as ParsedQs. Both break Prisma's type inference downstream,
+// so we narrow them to plain strings.
+export interface AuthRequest extends Request<
+  Record<string, string>, // params
+  any, // res body
+  any, // req body
+  Record<string, string | undefined> // query
+> {
   user?: {
     id: string;
     email: string;

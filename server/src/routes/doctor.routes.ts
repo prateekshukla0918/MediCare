@@ -1,11 +1,11 @@
-import { Router, Request, Response } from 'express';
+import { Router, Response } from 'express';
 import prisma from '../prisma';
 import { authenticateToken, AuthRequest, requireRole } from '../middleware/auth';
 
 const router = Router();
 
 // Public doctor discovery directory
-router.get('/', async (req: Request, res: Response): Promise<void> => {
+router.get('/', async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { search, specialization, language, maxFee, sort } = req.query;
 
@@ -72,7 +72,7 @@ router.get('/', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Single doctor profile
-router.get('/:id', async (req: Request, res: Response): Promise<void> => {
+router.get('/:id', async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const doctor = await prisma.doctorProfile.findUnique({
       where: { id: req.params.id },
@@ -104,7 +104,7 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
 });
 
 // Calculate live available time slots for a chosen date
-router.get('/:id/slots', async (req: Request, res: Response): Promise<void> => {
+router.get('/:id/slots', async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const doctorId = req.params.id;
     const dateParam = String(req.query.date || '');

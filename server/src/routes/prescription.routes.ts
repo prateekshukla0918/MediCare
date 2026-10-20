@@ -221,7 +221,7 @@ router.post('/', authenticateToken, requireRole(['DOCTOR']), async (req: AuthReq
     });
   } catch (err: any) {
     if (err instanceof z.ZodError) {
-      res.status(400).json({ error: err.errors[0].message });
+      res.status(400).json({ error: err.issues[0].message });
       return;
     }
     console.error('Error issuing prescription:', err);

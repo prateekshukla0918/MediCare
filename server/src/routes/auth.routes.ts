@@ -153,7 +153,7 @@ router.post('/register', async (req, res): Promise<void> => {
     });
   } catch (err: any) {
     if (err instanceof z.ZodError) {
-      res.status(400).json({ error: err.errors[0].message });
+      res.status(400).json({ error: err.issues[0].message });
       return;
     }
     console.error('Registration error:', err);
@@ -210,7 +210,7 @@ router.post('/login', async (req, res): Promise<void> => {
     });
   } catch (err: any) {
     if (err instanceof z.ZodError) {
-      res.status(400).json({ error: err.errors[0].message });
+      res.status(400).json({ error: err.issues[0].message });
       return;
     }
     console.error('Login error:', err);
